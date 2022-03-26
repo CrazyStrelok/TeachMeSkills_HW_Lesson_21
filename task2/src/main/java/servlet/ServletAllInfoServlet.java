@@ -15,19 +15,13 @@ import java.sql.*;
 public class ServletAllInfoServlet extends HttpServlet {
 
     private static final String SELECT_ALL = "SELECT * FROM USERS";
-    private java.sql.Connection connection;
-    private final PreparedStatement preparedStatement;
 
-    public ServletAllInfoServlet(Connection connection, PreparedStatement preparedStatement) {
-        this.connection = connection;
-        this.preparedStatement = preparedStatement;
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 
-        try (
+        try (Connection connection = DBConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
 

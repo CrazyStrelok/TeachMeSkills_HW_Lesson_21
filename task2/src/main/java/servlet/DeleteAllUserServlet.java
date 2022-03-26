@@ -17,18 +17,13 @@ import java.sql.SQLException;
 public class DeleteAllUserServlet extends HttpServlet {
 
     private static final String DELETE_ALL_USER = "DELETE FROM users ";
-    private java.sql.Connection connection;
-    private final PreparedStatement preparedStatement;
 
-    public DeleteAllUserServlet(Connection connection, PreparedStatement preparedStatement) {
-        this.connection = connection;
-        this.preparedStatement = preparedStatement;
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-            try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ALL_USER)) {
+            try(Connection connection = DBConnection.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ALL_USER)) {
 
             int resultSet = preparedStatement.executeUpdate();
 

@@ -18,19 +18,14 @@ import java.sql.SQLException;
 public class SelectByIDServlet extends HttpServlet {
 
     private static final String SELECT_BY_ID = "SELECT * FROM users WHERE iduser = ?";
-    private java.sql.Connection connection;
-    private final PreparedStatement preparedStatement;
 
-    public SelectByIDServlet(Connection connection, PreparedStatement preparedStatement) {
-        this.connection = connection;
-        this.preparedStatement = preparedStatement;
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int IDUser = Integer.parseInt(req.getParameter("IDUser"));
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID)) {
+        try(Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID)) {
 
             preparedStatement.setInt(1, IDUser);
             preparedStatement.execute();

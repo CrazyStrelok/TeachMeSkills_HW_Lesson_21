@@ -15,14 +15,7 @@ import java.sql.SQLException;
     @WebServlet("/updateAge")
     public class UpdateAgeByID extends HttpServlet {
 
-        private static final String UPDATE_AGE = "UPDATE USERS SET AGE = ? WHERE IDUSER = ?";
-        private java.sql.Connection connection;
-        private final PreparedStatement preparedStatement;
-
-        public UpdateAgeByID(Connection connection, PreparedStatement preparedStatement) {
-            this.connection = connection;
-            this.preparedStatement = preparedStatement;
-        }
+        private static final String UPDATE_AGE = "UPDATE USERS SET AGE = ? WHERE iduser = ?";
 
         @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,7 +23,8 @@ import java.sql.SQLException;
             int IDUser = Integer.parseInt(req.getParameter("IDUser"));
             int age = Integer.parseInt(req.getParameter("age"));
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AGE)) {
+            try (Connection connection = DBConnection.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AGE)) {
 
                 preparedStatement.setInt(1, age);
                 preparedStatement.setInt(2, IDUser);
